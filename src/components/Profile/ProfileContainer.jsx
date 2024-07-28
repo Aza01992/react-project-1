@@ -1,18 +1,16 @@
 import React from 'react';
 import Profile from './Profile';
 import { connect } from 'react-redux';
-import { useParams, useNavigate} from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { getStatus, getUserProfile, updateStatus } from '../../redux/profile-reducer.js';
 import { compose } from 'redux';
 
 export function withRouter(Children){
   return(props)=>{
-    const params = useParams();
-    const navigate = useNavigate();
-    return <Children {...props} params={params} navigate={navigate} />;
-  };
+      const match  = {params: useParams()};
+      return <Children {...props}  match={match}/>
+  }
 }
-
 
 class ProfileContainer extends React.Component  {
  
@@ -22,7 +20,7 @@ class ProfileContainer extends React.Component  {
       if(!userId) {
         userId = this.props.authorizedUserId;
         if (!userId) {
-          this.props.navigate("/login");
+          this.props.history.push("/login");
         }
     }
     this.props.getUserProfile(userId);
